@@ -10,6 +10,9 @@ public class ArrayList<T> implements List<T> {
     private int size;
 
     public ArrayList(int initCapacity) {
+        if (initCapacity <= 0) {
+            throw new IllegalArgumentException();
+        }
         elements = new Object[initCapacity];
     }
 
@@ -25,14 +28,20 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public void add(T element) {
-        checkArrayForFilling();
+        if (!checkForEnoughSpace()) {
+            grow();
+        }
         elements[size++] = element;
     }
 
-    private void checkArrayForFilling() {
-        if (size == elements.length) {
-            elements = Arrays.copyOf(elements, size * 2);
-        }
+    private void grow() {
+        Object[] newArray = Arrays.copyOf(elements, size * 2);
+        System.arraycopy(elements, 0, newArray, 0, elements.length);
+        elements = newArray;
+    }
+
+    private boolean checkForEnoughSpace() {
+        return size < elements.length;
     }
 
     @Override
@@ -41,7 +50,6 @@ public class ArrayList<T> implements List<T> {
         if (index == size) {
             add(element);
         } else {
-            checkArrayForFilling();
             System.arraycopy(elements, index, elements, index + 1, size - index);
             elements[index] = element;
             size++;
@@ -50,6 +58,9 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public void set(int index, T element) {
+        if (isEmpty()) {
+            throw new IndexOutOfBoundsException();
+        }
         checkIndex(index);
         elements[index] = element;
     }
@@ -61,14 +72,14 @@ public class ArrayList<T> implements List<T> {
     }
 
     private void checkIndex(int index) {
-        if (index < 0 || index > size) {
+        if (index < 0 || index > elements.length || isEmpty()) {
             throw new IndexOutOfBoundsException();
         }
     }
 
     @Override
     public T getFirst() {
-        if (size == 0) {
+        if (isEmpty()) {
             throw new NoSuchElementException();
         }
         return (T) elements[0];
@@ -76,7 +87,7 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public T getLast() {
-        if (size == 0) {
+        if (isEmpty()) {
             throw new NoSuchElementException();
         }
         return (T) elements[size - 1];
@@ -114,6 +125,6 @@ public class ArrayList<T> implements List<T> {
     @Override
     public void clear() {
         size = 0;
-        elements = null;
+        elements = new Object[DEFAULT_CAPACITY];
     }
 }

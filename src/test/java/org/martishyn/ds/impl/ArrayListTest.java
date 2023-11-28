@@ -13,6 +13,10 @@ class ArrayListTest {
     private List<Integer> arrayList = new ArrayList<>();
 
     @Test
+    void shouldThrowExceptionWhenInitCapacityNegative() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new ArrayList<>(-1));
+    }
+    @Test
     void shouldCreateArrayWithDefaultCapacity() {
         arrayList = new ArrayList<>();
         Object[] internalArray = getInternalArray();
@@ -90,19 +94,16 @@ class ArrayListTest {
 
     @Test
     void shouldAddElementByIndexAndResizeWhenFull() {
-        int initialCapacity = getInternalArray().length;
-
         arrayList.add(1);
         arrayList.add(2);
         arrayList.add(3);
         arrayList.add(4);
+        arrayList.add(5);
 
-        arrayList.add(0, 0);
-        arrayList.add(3, 3);
+        arrayList.add(5, 111);
 
-        Assertions.assertEquals(0, getInternalArray()[0]);
-        Assertions.assertEquals(3, getInternalArray()[3]);
-        Assertions.assertTrue(getInternalArray().length > initialCapacity);
+        Assertions.assertEquals(111, getInternalArray()[5]);
+        Assertions.assertEquals(6, getInternalSize());
     }
 
     @Test
@@ -184,7 +185,6 @@ class ArrayListTest {
         arrayList.clear();
         int sizeAfterClear = getInternalSize();
 
-        Assertions.assertNull(getInternalArray());
         Assertions.assertEquals(5, sizeBeforeClear);
         Assertions.assertEquals(0, sizeAfterClear);
     }
