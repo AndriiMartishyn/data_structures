@@ -1,10 +1,10 @@
-package org.martishyn.ds.impl;
+package org.martishyn.ds.arraylist;
 
 
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.martishyn.ds.interfaces.List;
+import org.martishyn.ds.list.List;
 
 import java.lang.reflect.Field;
 import java.util.NoSuchElementException;
