@@ -1,4 +1,4 @@
-package org.martishyn.ds.interfaces;
+package org.martishyn.ds.list;
 
 public interface List<T> {
     void add(T element);

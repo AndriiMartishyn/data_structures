@@ -1,6 +1,6 @@
-package org.martishyn.ds.impl;
+package org.martishyn.ds.arraylist;
 
-import org.martishyn.ds.interfaces.List;
+import org.martishyn.ds.list.List;
 
 import java.util.*;
 
